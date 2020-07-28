@@ -18,6 +18,27 @@ const DynamoDB = {
 
     return data.Items
   },
+
+  async write(data, TableName) {
+    if (!data.UUID) {
+      throw Error('No uuid in the data')
+    }
+
+    const params = {
+      TableName,
+      Item: data,
+    }
+
+    const res = await documentClient
+      .put(params)
+      .promise()
+
+    if (!res) {
+      throw Error(`There was an error inserting ID ${data.UUID} in table ${TableName}`)
+    }
+
+    return data
+  },
 }
 
 module.exports = DynamoDB
