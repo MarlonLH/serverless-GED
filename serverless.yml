@@ -31,6 +31,26 @@ custom:
     - bucketName: ${self:custom.bucketName}
       localDir: dist
 
+functions:
+  documents:
+    handler: lambdas/endpoints/documents.handler
+    events:
+      # Post a new signed url
+      - http:
+            path: documents
+            method: POST
+            cors: true
+      # Get a specific signed url
+      - http:
+            path: documents/{uuid}
+            method: GET
+            cors: true
+      # Get all generated signed urls
+      - http:
+            path: documents/
+            method: GET
+            cors: true
+
 resources:
   Resources:
     FileGEDBucket:
