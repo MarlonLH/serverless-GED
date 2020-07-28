@@ -18,8 +18,17 @@ const getAllDocuments = async () => {
   return Responses._200({ success: true, documents })
 }
 
-const getDocumentByUUID = async () => {
+const getDocumentByUUID = async (UUID) => {
+  const document = await DynamoDB.get(UUID, tableName).catch((error) => {
+    console.log('Error in DynamoDB scan', error)
+    return ({ failed: true, error })
+  })
 
+  if (!document || document.failed) {
+    return Responses._400({ message: 'Failed to get document.', error: document && document.error })
+  }
+  
+  return Responses._200({ success: true, document })
 }
 
 const postDocument = async () => {
@@ -48,8 +57,8 @@ module.exports.handler = async (event) => {
   const { httpMethod, pathParameters } = event
 
   if (httpMethod === 'GET') {
-    if (pathParameters && pathParameters.uuid && typeof pathParameters === 'string') {
-      return getDocumentByUUID(pathParameters)
+    if (pathParameters && pathParameters.uuid && typeof pathParameters.uuid === 'string') {
+      return getDocumentByUUID(pathParameters.uuid)
     }
     return getAllDocuments()
   } else if (httpMethod === 'POST') {

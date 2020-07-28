@@ -39,6 +39,25 @@ const DynamoDB = {
 
     return data
   },
+
+  async get(UUID, TableName) {
+    const params = {
+      TableName,
+      Key: {
+        UUID,
+      },
+    }
+
+    const data = await documentClient
+      .get(params)
+      .promise()
+    
+    if (!data || !data.Item) {
+      throw Error(`There as an error fetching the data for UUID of ${UUID} from ${TableName}`)
+    }
+
+    return data.Item
+  },
 }
 
 module.exports = DynamoDB
