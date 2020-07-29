@@ -32,23 +32,26 @@ custom:
       localDir: dist
 
 functions:
-  documents:
-    handler: lambdas/endpoints/documents.handler
+  getDocumentByUUID:
+    handler: lambdas/endpoints/getDocumentByUUID.handler
     events:
-      # Post a new signed url
-      - http:
-            path: documents
-            method: POST
-            cors: true
-      # Get a specific signed url
       - http:
             path: documents/{uuid}
             method: GET
             cors: true
-      # Get all generated signed urls
+  getDocuments:
+    handler: lambdas/endpoints/getDocuments.handler
+    events:
       - http:
             path: documents/
             method: GET
+            cors: true
+  postDocument:
+    handler: lambdas/endpoints/postDocument.handler
+    events:
+      - http:
+            path: documents
+            method: POST
             cors: true
 
 resources:
