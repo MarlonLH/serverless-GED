@@ -6,10 +6,11 @@ const s3Client = new AWS.S3()
 const S3 = {
   async getPresignedURL(Bucket) {
     const UUID = uuid.v4()
+    const url = `https://${Bucket}.s3.amazonaws.com/${UUID}`
 
     const s3Params = {
       Bucket,
-      Key: `file/${UUID}`,
+      Key: UUID,
       ACL: 'public-read',
     }
 
@@ -19,7 +20,7 @@ const S3 = {
       throw Error('Error with s3 getSignedURL')
     }
   
-    return ({ UUID, uploadURL })
+    return ({ UUID, uploadURL, url })
   },
 }
 
