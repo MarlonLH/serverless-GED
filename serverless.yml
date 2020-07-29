@@ -17,9 +17,7 @@ provider:
       Resource: '*'
 
 plugins:
-  - serverless-s3-sync
   - serverless-webpack
-
 
 package:
   individually: true
